@@ -1,0 +1,34 @@
+server:
+  port: 6001
+
+spring:
+  application:
+    name: pos-gateway
+  cloud:
+    gateway:
+#      开启 DiscoveryClient 的支持，和服务发现、负载均衡有关
+      discovery:
+        locator:
+          enabled: true
+#      配置路由
+      routes:
+        - id: pos-products
+#          使用负载均衡访问服务实例，默认策略是 RoundRobin；通过服务名访问需要 DiscoveryClient 的支持
+          uri: lb://pos-products
+#          匹配条件
+          predicates:
+            - Path=/api/products/**
+
+        - id: pos-carts
+          uri: lb://pos-carts
+          predicates:
+            - Path=/api/carts/**
+
+eureka:
+  instance:
+    instance-id: pos-gateway6001
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:7001/eureka

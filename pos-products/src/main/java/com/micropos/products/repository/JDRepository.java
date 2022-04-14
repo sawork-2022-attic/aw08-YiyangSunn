@@ -1,6 +1,7 @@
 package com.micropos.products.repository;
 
 import com.micropos.products.model.Product;
+import com.micropos.products.model.Product;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -8,21 +9,30 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class JDRepository implements ProductRepository {
-    private List<Product> products = null;
+
+    private volatile List<Product> products = null;
 
     @Override
     public List<Product> allProducts() {
         try {
-            if (products == null)
-                products = parseJD("Java");
-        } catch (IOException e) {
-            products = new ArrayList<>();
+            // 防止有两个线程同时调用 allProducts
+            if (products == null) {
+                synchronized (this) {
+                    if (products == null) {
+                        products = parseJD("Java");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            return new ArrayList<>();
         }
         return products;
     }
@@ -37,11 +47,11 @@ public class JDRepository implements ProductRepository {
         return null;
     }
 
-    public static List<Product> parseJD(String keyword) throws IOException {
+    public static List<Product> parseJD(String keyword) throws Exception {
         String url = "https://search.jd.com/Search?keyword=" + keyword;
         Document document = Jsoup.parse(new URL(url), 10000);
         Element element = document.getElementById("J_goodsList");
-        Elements elements = element.getElementsByTag("li");
+        Elements elements = Objects.requireNonNull(element).getElementsByTag("li");
         List<Product> list = new ArrayList<>();
 
         for (Element el : elements) {
@@ -49,7 +59,7 @@ public class JDRepository implements ProductRepository {
             String img = "https:".concat(el.getElementsByTag("img").eq(0).attr("data-lazy-img"));
             String price = el.getElementsByAttribute("data-price").text();
             String title = el.getElementsByClass("p-name").eq(0).text();
-            if (title.indexOf("，") >= 0)
+            if (title.contains("，"))
                 title = title.substring(0, title.indexOf("，"));
 
             Product product = new Product(id, title, Double.parseDouble(price), img);
@@ -57,4 +67,5 @@ public class JDRepository implements ProductRepository {
         }
         return list;
     }
+
 }

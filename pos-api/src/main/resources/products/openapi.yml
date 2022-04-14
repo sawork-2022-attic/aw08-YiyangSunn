@@ -1,9 +1,11 @@
 openapi: "3.0.0"
+
 info:
   version: 1.0.0
   title: Products
   license:
     name: MIT
+
 paths:
   /products:
     get:
@@ -12,7 +14,7 @@ paths:
       tags:
         - products
       responses:
-        '200':
+        200:
           description: A paged array of products
           content:
             application/json:
@@ -24,6 +26,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+
   /products/{productId}:
     get:
       summary: Info for a specific product
@@ -38,7 +41,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        200:
           description: Expected response to a valid request
           content:
             application/json:
@@ -50,6 +53,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+
 components:
   schemas:
     Product:
@@ -63,13 +67,16 @@ components:
         name:
           type: string
         price:
-          type: double
+          type: number
+          format: double
         image:
           type: string
+
     Products:
       type: array
       items:
         $ref: "#/components/schemas/Product"
+
     Error:
       type: object
       required:
