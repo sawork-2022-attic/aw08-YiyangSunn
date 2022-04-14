@@ -81,7 +81,7 @@ public class CartController implements CartsApi {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
     }
 
-    public ResponseEntity<ItemDto> showItemById(Throwable throwable) {
+    public ResponseEntity<ItemDto> showItemByIdFallback(Throwable throwable) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
     }
 
