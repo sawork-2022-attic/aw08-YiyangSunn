@@ -61,7 +61,7 @@ public class InMemoryCartRepository implements CartRepository {
         if (cartTable.containsKey(productDto.getId())) {
             return false;
         }
-        cartTable.put(productDto.getId(), new Item(productDto, quantity));
+        cartTable.put(productDto.getId(), new Item(productDto, quantity, System.currentTimeMillis()));
         return true;
     }
 

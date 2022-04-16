@@ -1,0 +1,25 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+    width: 100%;
+    margin-top: 20px;
+    background: white;
+}
+
+.header > .brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header > .search {
+    width: 600px;
+    margin-left: 20px;
+}
+
+.header .ant-btn {
+    font-size: 18px;
+    width: 80px;
+}

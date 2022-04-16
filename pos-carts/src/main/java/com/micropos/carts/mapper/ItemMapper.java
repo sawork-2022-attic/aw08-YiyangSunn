@@ -16,8 +16,8 @@ public interface ItemMapper {
     public List<ItemDto> toItemDtos(List<Item> items);
 
     @Mapping(
-            target = "productDto",
-            expression = "java(new ProductDto().id(itemDto.getId()).name(itemDto.getName()).price(itemDto.getPrice()).image(itemDto.getImage()))"
+        target = "productDto",
+        expression = "java(new ProductDto().id(itemDto.getId()).name(itemDto.getName()).price(itemDto.getPrice()).image(itemDto.getImage()))"
     )
     public Item toItem(ItemDto itemDto);
 
@@ -25,7 +25,7 @@ public interface ItemMapper {
             @Mapping(target = "id", expression = "java(item.getProductDto().getId())"),
             @Mapping(target = "name", expression = "java(item.getProductDto().getName())"),
             @Mapping(target = "price", expression = "java(item.getProductDto().getPrice())"),
-            @Mapping(target = "image", expression = "java(item.getProductDto().getImage())")
+            @Mapping(target = "image", expression = "java(item.getProductDto().getImage())"),
     })
     public ItemDto toItemDto(Item item);
 

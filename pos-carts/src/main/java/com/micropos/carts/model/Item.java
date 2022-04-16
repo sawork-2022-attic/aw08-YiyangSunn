@@ -10,9 +10,12 @@ public class Item {
 
     private int quantity;
 
-    public Item(ProductDto productDto, int quantity) {
+    private long timeStamp;
+
+    public Item(ProductDto productDto, int quantity, long timeStamp) {
         this.productDto = productDto;
         this.quantity = quantity;
+        this.timeStamp = timeStamp;
     }
 
     public ProductDto getProductDto() {
@@ -29,6 +32,14 @@ public class Item {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     @Override

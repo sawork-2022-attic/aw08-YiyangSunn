@@ -1,0 +1,51 @@
+.content {
+    width: 100%;
+    height: auto;
+    overflow-x: clip;
+}
+
+.content .spin-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.content .ant-list {
+    margin-top: 20px;
+    margin-left: 45px;
+}
+
+.content .ant-row {
+    width: 95%;
+}
+
+.content .ant-col {
+    width: 220px;
+    margin-left: 10px;
+}
+
+.content .ant-card {
+    border-radius: 10px;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.content .ant-card-actions {
+    display: flex;
+    align-items: center;
+    border-radius: 0 0 10px 10px;
+    height: 45px;
+}
+
+.content .ant-card-cover {
+    display: flex;
+    justify-content: center;
+}
+
+.content .ant-card-meta-description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+}
