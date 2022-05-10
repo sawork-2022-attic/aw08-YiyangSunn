@@ -1,51 +1,64 @@
 .content {
+    display: flex;
+    justify-content: center;
     width: 100%;
     height: auto;
     overflow-x: clip;
 }
 
-.content .spin-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
-
-.content .ant-list {
+.content .product-list {
     margin-top: 20px;
-    margin-left: 45px;
+    width: 80%;
 }
 
-.content .ant-row {
-    width: 95%;
+.content .product-container {
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(1, 1, 1, 0);
+    padding: 40px 15px;
 }
 
-.content .ant-col {
-    width: 220px;
-    margin-left: 10px;
+.content .product-container:hover {
+    border-style: solid;
+    border-color: #dddddd;
+    box-shadow: 0 0 3px #dddddd;
 }
 
-.content .ant-card {
-    border-radius: 10px;
-    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
-}
-
-.content .ant-card-actions {
-    display: flex;
-    align-items: center;
-    border-radius: 0 0 10px 10px;
-    height: 45px;
-}
-
-.content .ant-card-cover {
+.content .product-image-container {
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
-.content .ant-card-meta-description {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    text-overflow: ellipsis;
+.content .product-image {
+    height: 200px;
+    max-width: 100%;
+}
+
+.content .product-price {
+    color: #e4393c;
+    margin-top: 15px;
+    margin-bottom: 4px;
+    font-size: 18px;
+}
+
+.content .product-description {
+    color: #666666;
+    font-size: 15px;
+}
+
+.content .product-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.content .add-item-button {
+    color: #e4393c;
+    font-size: 14px;
+}
+
+.content .add-item-button:hover {
+    color: #e4393c;
+    border-color: #e4393c;
 }

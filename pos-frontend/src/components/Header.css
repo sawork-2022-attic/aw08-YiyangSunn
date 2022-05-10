@@ -8,18 +8,39 @@
     background: white;
 }
 
-.header > .brand {
+.header .brand {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.header > .search {
+.header .brand-logo {
+    color: black;
+    font-size: 60px;
+    margin-right: 20px;
+}
+
+.header .brand-name {
+    color: black;
+    font-size: 35px;
+}
+
+.header .search {
     width: 600px;
     margin-left: 20px;
 }
 
-.header .ant-btn {
+.header .cart-part {
+    margin-left: 30px;
+}
+
+.header .cart-button {
+    width: auto;
+    height: auto;
+}
+
+.header .cart-button-logo {
     font-size: 18px;
-    width: 80px;
+    height: 20px;
+    width: 20px;
 }

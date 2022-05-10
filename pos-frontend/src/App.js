@@ -1,34 +1,38 @@
-import React, {useState} from "react";
-import {ArrowUpOutlined} from "@ant-design/icons";
-import {Button, message} from "antd";
-import Header from "./components/Header";
-import Content from "./components/Content";
-import Sider from "./components/Sider";
-import "antd/dist/antd.min.css";
-import "./App.css";
+import React, {useState} from "react"
+import {ArrowUpOutlined} from "@ant-design/icons"
+import {BackTop, Button, message} from "antd"
+import Header from "./components/Header"
+import Content from "./components/Content"
+import "antd/dist/antd.min.css"
+import "./App.css"
 
-export default function App(props) {
+export const CartContext = React.createContext({});
+
+export default function App() {
+
   // 购物车清单（状态提升，用于组件间通信）
-  const [itemList, setItemList] = useState([]);
+  const [itemList, setItemList] = useState([])
+
+  // 操作随状态
 
   // 添加商品
   const addItem = (newItem) => {
-    let notNew = false;
+    let isNew = true
     for (let idx in itemList) {
       if (itemList[idx].id === newItem.id) {
-        notNew = true;
-        break;
+        isNew = false
+        break
       }
     }
     // 如果不是新的，就更新原来的值
-    if (notNew) {
+    if (!isNew) {
       setItemList(
         itemList.map(
           item => item.id === newItem.id ?
             {...item, quantity: newItem.quantity} :
             item
         )
-      );
+      )
     } else {
       setItemList([...itemList, newItem]);
     }
@@ -44,7 +48,7 @@ export default function App(props) {
     setItemList([]);
   }
 
-  // 操作随状态
+  // 封装网络请求
   const requestAddItem = async (productId, quantity) => {
     await fetch(
       `http://localhost:6001/api/carts/${productId}?quantity=${quantity}`,
@@ -53,11 +57,11 @@ export default function App(props) {
       }
     ).then(response => {
       if (response.ok) {
-        return true;
+        return true
       } else {
-        throw Error("Failed to add item!");
+        throw Error("Failed to add item!")
       }
-    }).then(ok => {
+    }).then(() => {
       // 如果成功再从后端取 item 的信息
       // 其实后端也可以直接返回一个 item 对象，分开取的好处是更灵活
       // 前端可以选择自己维护数据
@@ -68,17 +72,17 @@ export default function App(props) {
         }
       ).then(response => {
         if (response.ok) {
-          message.success(quantity > 0 ? "添加成功" : "成功移除一件商品");
-          return response.json();
+          message.success(quantity > 0 ? "添加成功" : "成功移除一件商品")
+          return response.json()
         } else {
-          throw Error("Failed to fetch added item!");
+          throw Error("Failed to fetch added item!")
         }
       }).then(data => {
-        addItem(data);
-      });
+        addItem(data)
+      })
     }).catch(error => {
-      message.error(error.message);
-    });
+      message.error(error.message)
+    })
   }
 
   const requestGetItems = async () => {
@@ -89,14 +93,14 @@ export default function App(props) {
       }
     ).then(response => {
       if (response.ok) {
-        return response.json();
+        return response.json()
       } else {
-        throw Error("Failed to get items!");
+        throw Error("Failed to get items!")
       }
     }).then(data => {
-      setItemList(data);
+      setItemList(data)
     }).catch(error => {
-      console.log(error.message);
+      console.log(error.message)
     })
   }
 
@@ -108,13 +112,13 @@ export default function App(props) {
       }
     ).then(response => {
       if (response.ok) {
-        message.success("删除成功");
-        removeItem(productId);
+        message.success("删除成功")
+        removeItem(productId)
       } else {
-        throw Error("Failed to delete item!");
+        throw Error("Failed to delete item!")
       }
     }).catch(error => {
-      message.error(error.message);
+      message.error(error.message)
     })
   }
 
@@ -126,53 +130,40 @@ export default function App(props) {
       }
     ).then(response => {
       if (response.ok) {
-        message.success("购物车已清空");
-        emptyItems();
+        message.success("购物车已清空")
+        emptyItems()
       } else {
-        throw Error("Failed to empty items!");
+        throw Error("Failed to empty items!")
       }
     }).catch(error => {
-      message.error(error.message);
+      message.error(error.message)
     })
   }
 
-  // 展示购物车的侧边栏
-  const sider = (
-    <Sider
-      itemList={itemList}
-      requestGetItems={requestGetItems}
-      requestAddItem={requestAddItem}
-      requestRemoveItem={requestRemoveItem}
-      requestEmptyItems={requestEmptyItems}
-    />
-  );
+  // 把数据和可用操作封装到上下文中，子组件可以直接从 context 里拿，
+  // 不用一层一层传递属性，避免 prop drilling
+  const value = {
+    itemList,
+    requestAddItem,
+    requestGetItems,
+    requestRemoveItem,
+    requestEmptyItems
+  }
 
   return (
     <div className="app">
-      {/*展示搜索框等信息，购物车作为 Header 的下拉菜单弹出*/}
-      <Header
-        sider={sider}
-        itemList={itemList}
-      />
-      {/*展示商品*/}
-      <Content
-        requestAddItem={requestAddItem}
-      />
-      {/*返回顶部的按钮*/}
-      <Button
-        shape="circle"
-        onClick={() => window.scrollTo(0, 0)}
-        style={{
-          position: "fixed",
-          right: "2%",
-          bottom: "5%",
-          width: "50px",
-          height: "50px",
-          fontSize: "28px"
-        }}
-      >
-        <ArrowUpOutlined/>
-      </Button>
+      <CartContext.Provider value={value}>
+        <Header/>
+        <Content/>
+        <BackTop>
+          <Button
+            className="back-top-button"
+            icon={<ArrowUpOutlined className="back-top-button-icon"/>}
+            shape="circle"
+          >
+          </Button>
+        </BackTop>
+      </CartContext.Provider>
     </div>
   );
 }

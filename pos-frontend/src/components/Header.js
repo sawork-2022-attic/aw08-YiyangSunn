@@ -1,30 +1,23 @@
-import React from "react";
-import {Badge, Button, Input, Popover} from "antd";
-import {AudioOutlined, CameraOutlined, ShoppingCartOutlined, WindowsOutlined} from "@ant-design/icons";
+import React, {useContext} from "react"
+import {Badge, Button, Dropdown, Input} from "antd"
+import {AudioOutlined, CameraOutlined, ShoppingCartOutlined, WindowsOutlined} from "@ant-design/icons"
+import "./Header.css"
+import {CartContext} from "../App"
+import Cart from "./Cart"
 
-import "./Header.css";
+export default function Header() {
 
-export default function Header(props) {
-  // 下拉菜单组件和购物车数据
-  const {sider, itemList} = props;
+  const {itemList} = useContext(CartContext)
 
   return (
     <div className="header">
-      <div
-        className="brand"
-        style={{
-          color: "black",
-          fontSize: "35px"
-        }}
-      >
-        <WindowsOutlined
-          style={{
-            color: "black",
-            fontSize: "60px",
-            marginRight: "20px"
-          }}
-        />
-        Micropos
+      <div className="brand">
+        <span className="brand-logo">
+          <WindowsOutlined/>
+        </span>
+        <span className="brand-name">
+          MicroPOS
+        </span>
       </div>
 
       {/*顶部搜索框*/}
@@ -34,43 +27,22 @@ export default function Header(props) {
         size="large"
         prefix={<AudioOutlined style={{marginRight: "15px"}}/>}
         suffix={<CameraOutlined style={{marginLeft: "15px"}}/>}
-        enterButton
+        enterButton="搜索"
       />
 
-      {/*弹出购物车下拉菜单*/}
-      <div
-        style={{
-          marginLeft: "30px"
-        }}
-      >
-        <Popover
-          content={sider}
-          // trigger="click"
-        >
+      {/*购物车下拉菜单按钮*/}
+      <div className="cart-part">
+        <Dropdown overlay={<Cart/>} placement="bottomLeft" arrow={true}>
           <Badge count={itemList.length}>
-            <Button
-              style={{
-                width: "auto",
-                height: "auto"
-              }}
-            >
-              <ShoppingCartOutlined
-                style={{
-                  height: "20px",
-                  width: "20px"
-                }}
-              />
-              <span
-                style={{
-                  fontSize: "16px"
-                }}
-              >
+            <Button className="cart-button">
+              <ShoppingCartOutlined className="cart-button-logo"/>
+              <span style={{fontSize: "16px"}}>
                 我的购物车
               </span>
             </Button>
           </Badge>
-        </Popover>
+        </Dropdown>
       </div>
     </div>
-  );
+  )
 }
