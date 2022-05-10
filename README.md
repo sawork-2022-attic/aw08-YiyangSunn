@@ -1,4 +1,4 @@
-# Amazon WebPOS
+# Amazon MicroPOS
 
 此分支基于 aw05 的微服务示例搭建前端页面，使用 Amazon Review 数据集作为后端数据来源，并提供分页查询。
 
