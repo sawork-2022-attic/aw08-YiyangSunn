@@ -45,6 +45,8 @@
 .content .product-description {
     color: #666666;
     font-size: 15px;
+    height: 75px;
+    overflow: hidden;
 }
 
 .content .product-actions {

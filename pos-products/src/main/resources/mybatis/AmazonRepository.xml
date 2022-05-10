@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.micropos.products.repository.AmazonRepository">
+
+    <resultMap id="ProductResultMap" type="Product">
+        <id column="asin" property="id"/>
+        <result column="title" property="name"/>
+        <result column="price" property="price"/>
+        <result column="image_url_high_res" property="image" typeHandler="ImageTypeHandler"/>
+    </resultMap>
+
+    <select id="allProducts" resultType="Product" resultMap="ProductResultMap">
+        select asin, title, image_url_high_res, RAND() * 1000 as price
+        from product limit 100
+    </select>
+
+    <select id="findProduct" resultType="Product" resultMap="ProductResultMap">
+        select asin, title, image_url_high_res, RAND() * 1000 as price
+        from product where asin = #{productId}
+    </select>
+
+    <select id="productsCount" resultType="int">
+        select count(*) from product
+    </select>
+
+    <select id="productsInRange" resultType="Product" resultMap="ProductResultMap">
+        select asin, title, image_url_high_res, RAND() * 1000 as price
+        from product limit #{fromIndex}, #{count}
+    </select>
+</mapper>

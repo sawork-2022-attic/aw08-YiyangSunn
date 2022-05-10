@@ -36,7 +36,7 @@ export default function Cart() {
               </div>
             </div>
             <div className="item-price">
-              {"￥" + item.price}
+              {"￥" + item.price.toFixed(1)}
             </div>
           </div>
           <div className="item-actions">
@@ -51,6 +51,7 @@ export default function Cart() {
               <Button
                 size="small"
                 shape="circle"
+                disabled={item.quantity === 1}
                 onClick={() => requestAddItem(item.id, -1)}
               >
                 -

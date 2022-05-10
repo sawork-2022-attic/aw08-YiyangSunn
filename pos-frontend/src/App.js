@@ -51,7 +51,7 @@ export default function App() {
   // 封装网络请求
   const requestAddItem = async (productId, quantity) => {
     await fetch(
-      `http://localhost:6001/api/carts/${productId}?quantity=${quantity}`,
+      `http://localhost:8080/api/carts/${productId}?quantity=${quantity}`,
       {
         method: "POST"
       }
@@ -66,7 +66,7 @@ export default function App() {
       // 其实后端也可以直接返回一个 item 对象，分开取的好处是更灵活
       // 前端可以选择自己维护数据
       fetch(
-        `http://localhost:6001/api/carts/${productId}`,
+        `http://localhost:8080/api/carts/${productId}`,
         {
           method: "GET"
         }
@@ -87,7 +87,7 @@ export default function App() {
 
   const requestGetItems = async () => {
     return await fetch(
-      "http://localhost:6001/api/carts",
+      "http://localhost:8080/api/carts",
       {
         method: "GET"
       }
@@ -106,7 +106,7 @@ export default function App() {
 
   const requestRemoveItem = async (productId) => {
     await fetch(
-      `http://localhost:6001/api/carts/${productId}`,
+      `http://localhost:8080/api/carts/${productId}`,
       {
         method: "DELETE"
       }
@@ -124,7 +124,7 @@ export default function App() {
 
   const requestEmptyItems = async () => {
     await fetch(
-      `http://localhost:6001/api/carts`,
+      `http://localhost:8080/api/carts`,
       {
         method: "DELETE"
       }

@@ -1,13 +1,17 @@
 package com.micropos.products.service;
 
+import com.micropos.products.model.PageResult;
 import com.micropos.products.model.Product;
 
 import java.util.List;
 
 public interface ProductService {
 
-    public List<Product> products();
+    List<Product> products();
 
-    public Product getProduct(String id);
+    Product getProduct(String id);
 
+    int getProductsCount();
+
+    PageResult productsInPage(int page, int pageSize);
 }

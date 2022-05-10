@@ -1,8 +1,10 @@
 package com.micropos.products.rest;
 
 import com.micropos.api.controller.ProductsApi;
+import com.micropos.api.dto.PageResultDto;
 import com.micropos.api.dto.ProductDto;
 import com.micropos.products.mapper.ProductMapper;
+import com.micropos.products.model.PageResult;
 import com.micropos.products.model.Product;
 import com.micropos.products.service.ProductService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api")
@@ -31,11 +32,11 @@ public class ProductController implements ProductsApi {
     @Override
     @CircuitBreaker(name = "product-controller", fallbackMethod = "listProductsFallback")
     public ResponseEntity<List<ProductDto>> listProducts() {
-        List<ProductDto> products = new ArrayList<>(productMapper.toProductsDto(this.productService.products()));
+        List<ProductDto> products = new ArrayList<>(productMapper.toProductsDto(productService.products()));
         if (products.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<List<ProductDto>>(products, HttpStatus.OK);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @Override
@@ -46,6 +47,13 @@ public class ProductController implements ProductsApi {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(productMapper.toProductDto(product));
+    }
+
+    @Override
+    public ResponseEntity<PageResultDto> getProductsInPage(Integer page, Integer pageSize) {
+        PageResult pageResult = productService.productsInPage(page, pageSize);
+        List<ProductDto> productDtos = new ArrayList<>(productMapper.toProductsDto(pageResult.getProducts()));
+        return ResponseEntity.ok(new PageResultDto().total(pageResult.getTotal()).products(productDtos));
     }
 
     // resilience4j 要求降级函数和原函数的返回值必须相同，这样就不能返回一条消息了
@@ -60,5 +68,4 @@ public class ProductController implements ProductsApi {
     public ResponseEntity<ProductDto> showProductByIdFallback(Throwable throwable) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
     }
-
 }

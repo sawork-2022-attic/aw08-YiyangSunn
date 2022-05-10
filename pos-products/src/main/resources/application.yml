@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: pos-products
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:23306/aw06_db
+    username: root
+    password: $2a$10$1P5vApro6CGetwiQYGSxF.719D2qz/nbFM8FQpP59dJi85Q/p5n6m
   cache:
     type: ehcache
     ehcache:
@@ -48,3 +53,10 @@ resilience4j:
         permittedNumberOfCallsInHalfOpenState: 10
 #        自动转到半开需要线程来监控，默认是 false
         automaticTransitionFromOpenToHalfOpenEnabled: true
+
+mybatis:
+  mapper-locations: classpath:mybatis/*.xml
+  type-aliases-package: com.micropos.products.model
+  type-handlers-package: com.micropos.products.model
+  configuration:
+    jdbc-type-for-null: null

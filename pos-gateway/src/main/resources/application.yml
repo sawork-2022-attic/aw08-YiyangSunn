@@ -1,5 +1,5 @@
 server:
-  port: 6001
+  port: 8080
 
 spring:
   application:
@@ -31,7 +31,7 @@ spring:
 
 eureka:
   instance:
-    instance-id: pos-gateway6001
+    instance-id: pos-gateway8080
   client:
     fetch-registry: true
     register-with-eureka: true

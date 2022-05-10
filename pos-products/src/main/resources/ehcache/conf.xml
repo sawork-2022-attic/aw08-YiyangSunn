@@ -8,7 +8,7 @@
 
     <!--    存储所有商品的缓存-->
     <cache name="products"
-           maxElementsInMemory="128"
+           maxElementsInMemory="4"
            memoryStoreEvictionPolicy="LRU"
            overflowToDisk="false"
            overflowToOffHeap="false">
@@ -24,4 +24,21 @@
         <persistence strategy="none"/>
     </cache>
 
+<!--    存储商品的分页查询结果-->
+    <cache name="productsInPage"
+           maxElementsInMemory="1024"
+           memoryStoreEvictionPolicy="LRU"
+           overflowToOffHeap="false"
+           overflowToDisk="false">
+        <persistence strategy="none"/>
+    </cache>
+
+<!--    存储商品总数-->
+    <cache name="productsCount"
+           maxElementsInMemory="4"
+           memoryStoreEvictionPolicy="LRU"
+           overflowToOffHeap="false"
+           overflowToDisk="false">
+        <persistence strategy="none"/>
+    </cache>
 </ehcache>

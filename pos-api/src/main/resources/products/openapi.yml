@@ -54,6 +54,33 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /products/pager:
+    get:
+      summary: Get a page of products
+      operationId: getProductsInPage
+      tags:
+        - products
+      parameters:
+        - name: page
+          in: query
+          required: true
+          description: page number
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          required: true
+          description: how many products per page
+          schema:
+            type: integer
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageResult"
+
 components:
   schemas:
     Product:
@@ -76,6 +103,16 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/Product"
+
+    PageResult:
+      type: object
+      properties:
+        total:
+          type: integer
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
 
     Error:
       type: object
