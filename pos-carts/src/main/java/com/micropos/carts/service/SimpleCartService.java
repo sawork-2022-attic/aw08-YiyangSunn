@@ -1,8 +1,11 @@
 package com.micropos.carts.service;
 
 import com.micropos.api.dto.ProductDto;
+import com.micropos.carts.mapper.ItemMapper;
 import com.micropos.carts.model.Item;
 import com.micropos.carts.repository.CartRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -11,19 +14,22 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+@Slf4j
 @Service
-public class CartServiceImpl implements CartService {
+public class SimpleCartService implements CartService {
 
     private static final String POS_PRODUCTS_URL = "http://pos-products/api";
 
-    private final CartRepository cartRepository;
+    private static final String POS_COUNTER_URL = "http://pos-counter/api";
 
-    private final RestTemplate restTemplate;
+    @Autowired
+    private CartRepository cartRepository;
 
-    public CartServiceImpl(CartRepository cartRepository, RestTemplate restTemplate) {
-        this.cartRepository = cartRepository;
-        this.restTemplate = restTemplate;
-    }
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private ItemMapper itemMapper;
 
     @Override
     @Cacheable(value = "items", unless = "#result != null && #result.size() > 0")
@@ -53,7 +59,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Caching(evict = {
             @CacheEvict(value = "items", allEntries = true),
-            @CacheEvict(value = "getItem", allEntries = false, key = "#root.args[0]")
+            @CacheEvict(value = "getItem", key = "#root.args[0]")
     })
     public boolean removeItem(String productId) {
         return cartRepository.deleteItem(productId);
@@ -62,7 +68,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Caching(evict = {
             @CacheEvict(value = "items", allEntries = true),
-            @CacheEvict(value = "getItem", allEntries = false, key = "#root.args[0]")
+            @CacheEvict(value = "getItem", key = "#root.args[0]")
     })
     public boolean updateItem(String productId, int quantity) {
         Item item = cartRepository.findItem(productId);
@@ -92,4 +98,19 @@ public class CartServiceImpl implements CartService {
         return cartRepository.updateItem(productId, newQuantity);
     }
 
+    @Override
+    public String checkout() {
+        // 计算总价
+        Double total = restTemplate.postForObject(
+                POS_COUNTER_URL + "/counter/checkout",
+                itemMapper.toItemDtos(cartRepository.allItems()),
+                Double.class
+        );
+        if (total == null) {
+            log.error("Counter service return null value");
+        }
+        // 生成订单
+
+        return null;
+    }
 }

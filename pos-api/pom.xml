@@ -71,37 +71,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/products/openapi.yml</inputSpec>
-                            <generatorName>spring</generatorName>
-                            <library>spring-boot</library>
-
-                            <!--                            生成 DTO 对象-->
-                            <generateModels>true</generateModels>
-                            <modelNameSuffix>Dto</modelNameSuffix>
-                            <modelPackage>com.micropos.api.dto</modelPackage>
-
-                            <!--                            生成 Controller 的接口类-->
-                            <generateApis>true</generateApis>
-                            <apiPackage>com.micropos.api.controller</apiPackage>
-
-                            <configOptions>
-                                <!--                                只要接口类，具体实现由我们自己提供-->
-                                <interfaceOnly>true</interfaceOnly>
-                                <performBeanValidation>true</performBeanValidation>
-                                <openApiNullable>false</openApiNullable>
-                                <serializationLibrary>jackson</serializationLibrary>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-
-                    <!--            根据 resources/carts/openapi.yml 自动生成代码-->
-                    <execution>
-                        <id>carts-api</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/carts/openapi.yml</inputSpec>
+                            <inputSpec>${project.basedir}/src/main/resources/openapi.yml</inputSpec>
                             <generatorName>spring</generatorName>
                             <library>spring-boot</library>
 

@@ -6,14 +6,15 @@ import java.util.List;
 
 public interface CartService {
 
-    public List<Item> items();
+    List<Item> items();
 
-    public Item getItem(String productId);
+    Item getItem(String productId);
 
-    public boolean removeAll();
+    boolean removeAll();
 
-    public boolean removeItem(String productId);
+    boolean removeItem(String productId);
 
-    public boolean updateItem(String productId, int quantity);
+    boolean updateItem(String productId, int quantity);
 
+    String checkout();
 }

@@ -11,15 +11,15 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ItemMapper {
 
-    public List<Item> toItems(List<ItemDto> itemDtos);
+    List<Item> toItems(List<ItemDto> itemDtos);
 
-    public List<ItemDto> toItemDtos(List<Item> items);
+    List<ItemDto> toItemDtos(List<Item> items);
 
     @Mapping(
         target = "productDto",
         expression = "java(new ProductDto().id(itemDto.getId()).name(itemDto.getName()).price(itemDto.getPrice()).image(itemDto.getImage()))"
     )
-    public Item toItem(ItemDto itemDto);
+    Item toItem(ItemDto itemDto);
 
     @Mappings({
             @Mapping(target = "id", expression = "java(item.getProductDto().getId())"),
@@ -27,6 +27,5 @@ public interface ItemMapper {
             @Mapping(target = "price", expression = "java(item.getProductDto().getPrice())"),
             @Mapping(target = "image", expression = "java(item.getProductDto().getImage())"),
     })
-    public ItemDto toItemDto(Item item);
-
+    ItemDto toItemDto(Item item);
 }

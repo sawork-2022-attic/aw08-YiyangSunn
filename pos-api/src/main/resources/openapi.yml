@@ -24,7 +24,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-
     delete:
       summary: Empty the cart
       operationId: emptyItems
@@ -39,7 +38,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-
   /carts/{productId}:
     get:
       summary: Info for a specified item
@@ -66,7 +64,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-
     delete:
       summary: delete the specified item
       operationId: removeItemById
@@ -88,7 +85,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-
     post:
       summary: change the quantity of the specified item
       operationId: updateItemById
@@ -116,9 +112,99 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /counter/checkout:
+    post:
+      summary: Compute the total price of products in a Cart
+      operationId: checkout
+      tags:
+        - checkout
+      requestBody:
+        description: The item list to compute on
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Items"
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: number
+                format: double
+  /products:
+    get:
+      summary: List all products
+      operationId: listProducts
+      tags:
+        - products
+      responses:
+        200:
+          description: A paged array of products
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Products"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /products/{productId}:
+    get:
+      summary: Info for a specific product
+      operationId: showProductById
+      tags:
+        - product
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The id of the product to retrieve
+          schema:
+            type: string
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /products/pager:
+    get:
+      summary: Get a page of products
+      operationId: getProductsInPage
+      tags:
+        - products
+      parameters:
+        - name: page
+          in: query
+          required: true
+          description: page number
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          required: true
+          description: how many products per page
+          schema:
+            type: integer
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageResult"
 
-#DTO 定义了后端和前端交互的对象，mapstruct 负责将实际模型转换为对应的 DTO
-#这里的 DTO 类由 openapi 根据下述说明自动生成
 components:
   schemas:
     Item:
@@ -139,12 +225,38 @@ components:
           type: string
         quantity:
           type: integer
-
     Items:
       type: array
       items:
         $ref: "#/components/schemas/Item"
-
+    Product:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+        image:
+          type: string
+    Products:
+      type: array
+      items:
+        $ref: "#/components/schemas/Product"
+    PageResult:
+      type: object
+      properties:
+        total:
+          type: integer
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
     Error:
       type: object
       required:
