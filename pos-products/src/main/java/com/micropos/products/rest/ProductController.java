@@ -50,6 +50,7 @@ public class ProductController implements ProductsApi {
     }
 
     @Override
+    @CircuitBreaker(name = "product-controller", fallbackMethod = "getProductsInPageFallback")
     public ResponseEntity<PageResultDto> getProductsInPage(Integer page, Integer pageSize) {
         PageResult pageResult = productService.productsInPage(page, pageSize);
         List<ProductDto> productDtos = new ArrayList<>(productMapper.toProductsDto(pageResult.getProducts()));
@@ -59,13 +60,15 @@ public class ProductController implements ProductsApi {
     // resilience4j 要求降级函数和原函数的返回值必须相同，这样就不能返回一条消息了
     // 因此可能需要统一返回一个 Result 对象，而不是直接在 ResponseEntity 中返回实际类型
 
-    // listProducts 的降级处理
     public ResponseEntity<List<ProductDto>> listProductsFallback(Throwable throwable) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
     }
 
-    // showProductById 的降级处理
     public ResponseEntity<ProductDto> showProductByIdFallback(Throwable throwable) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+    }
+
+    public ResponseEntity<PageResultDto> getProductsInPageFallback(Throwable throwable) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
     }
 }

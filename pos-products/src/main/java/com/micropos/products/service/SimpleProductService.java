@@ -2,9 +2,7 @@ package com.micropos.products.service;
 
 import com.micropos.products.model.PageResult;
 import com.micropos.products.model.Product;
-import com.micropos.products.repository.AmazonRepository;
 import com.micropos.products.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
