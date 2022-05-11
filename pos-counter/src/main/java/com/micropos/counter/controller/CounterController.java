@@ -3,11 +3,12 @@ package com.micropos.counter.controller;
 import com.micropos.api.controller.CounterApi;
 import com.micropos.api.dto.ItemDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class CounterController implements CounterApi {
 

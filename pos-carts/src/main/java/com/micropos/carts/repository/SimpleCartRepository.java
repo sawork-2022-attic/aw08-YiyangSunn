@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class InMemoryCartRepository implements CartRepository {
+public class SimpleCartRepository implements CartRepository {
 
     // 防止有线程问题
     private final Map<String, Item> cartTable = new ConcurrentHashMap<>();

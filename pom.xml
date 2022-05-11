@@ -39,6 +39,7 @@
         <module>pos-gateway</module>
         <module>pos-api</module>
         <module>pos-counter</module>
+        <module>pos-orders</module>
     </modules>
 
     <dependencyManagement>

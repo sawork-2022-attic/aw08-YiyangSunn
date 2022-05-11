@@ -204,6 +204,45 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PageResult"
+  /orders:
+    get:
+      summary: Get the outline of all orders
+      operationId: getOrders
+      tags:
+        - orders
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderOutlines"
+  /orders/{orderId}:
+    get:
+      summary: Get the detail info of the specified order
+      operationId: getOrderById
+      tags:
+        - order
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          description: The id of the order to retrieve
+          schema:
+            type: string
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   schemas:
@@ -257,6 +296,47 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Product"
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: string
+        deliveryId:
+          type: string
+        createdTime:
+          type: integer
+          format: int64
+        payedTime:
+          type: integer
+          format: int64
+        total:
+          type: number
+          format: double
+        orderStatus:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Item"
+    OrderOutline:
+      type: object
+      properties:
+        orderId:
+          type: string
+        deliveryId:
+          type: string
+        createdTime:
+          type: integer
+          format: int64
+        orderStatus:
+          type: string
+        total:
+          type: number
+          format: double
+    OrderOutlines:
+      type: array
+      items:
+        $ref: "#/components/schemas/OrderOutline"
     Error:
       type: object
       required:

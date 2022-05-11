@@ -11,15 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ItemMapper {
 
-    List<Item> toItems(List<ItemDto> itemDtos);
-
     List<ItemDto> toItemDtos(List<Item> items);
-
-    @Mapping(
-        target = "productDto",
-        expression = "java(new ProductDto().id(itemDto.getId()).name(itemDto.getName()).price(itemDto.getPrice()).image(itemDto.getImage()))"
-    )
-    Item toItem(ItemDto itemDto);
 
     @Mappings({
             @Mapping(target = "id", expression = "java(item.getProductDto().getId())"),
