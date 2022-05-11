@@ -35,6 +35,9 @@ public class SimpleOrderService implements OrderService {
         order.setTotal(total);
         order.setItems(items);
         order.setOrderStatus("已支付");
+        // 生成物流编号
+        order.setDeliveryId(UUID.randomUUID().toString());
+
         // 放入数据库
         if (!orderRepository.saveOrder(order)) {
             return null;
