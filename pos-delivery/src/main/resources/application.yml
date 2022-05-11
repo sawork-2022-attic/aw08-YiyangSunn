@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: pos-delivery
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: root
+    password: Saw0rk_2o22
 
 eureka:
   client:
