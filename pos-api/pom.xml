@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.micropos</groupId>
+        <artifactId>micropos</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <artifactId>pos-api</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+<!--            不要打成可执行的 jar 包，否则会导致其他模块依赖不了这个模块-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <executions>
+                    <!--            根据 resources/products/openapi.yml 自动生成代码-->
+                    <execution>
+                        <id>products-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/products/openapi.yml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <library>spring-boot</library>
+
+                            <!--                            生成 DTO 对象-->
+                            <generateModels>true</generateModels>
+                            <modelNameSuffix>Dto</modelNameSuffix>
+                            <modelPackage>com.micropos.api.dto</modelPackage>
+
+                            <!--                            生成 Controller 的接口类-->
+                            <generateApis>true</generateApis>
+                            <apiPackage>com.micropos.api.controller</apiPackage>
+
+                            <configOptions>
+                                <!--                                只要接口类，具体实现由我们自己提供-->
+                                <interfaceOnly>true</interfaceOnly>
+                                <performBeanValidation>true</performBeanValidation>
+                                <openApiNullable>false</openApiNullable>
+                                <serializationLibrary>jackson</serializationLibrary>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <!--            根据 resources/carts/openapi.yml 自动生成代码-->
+                    <execution>
+                        <id>carts-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/carts/openapi.yml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <library>spring-boot</library>
+
+                            <!--                            生成 DTO 对象-->
+                            <generateModels>true</generateModels>
+                            <modelNameSuffix>Dto</modelNameSuffix>
+                            <modelPackage>com.micropos.api.dto</modelPackage>
+
+                            <!--                            生成 Controller 的接口类-->
+                            <generateApis>true</generateApis>
+                            <apiPackage>com.micropos.api.controller</apiPackage>
+
+                            <configOptions>
+                                <!--                                只要接口类，具体实现由我们自己提供-->
+                                <interfaceOnly>true</interfaceOnly>
+                                <performBeanValidation>true</performBeanValidation>
+                                <openApiNullable>false</openApiNullable>
+                                <serializationLibrary>jackson</serializationLibrary>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
