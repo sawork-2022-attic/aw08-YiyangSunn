@@ -1,5 +1,7 @@
 package com.micropos.carts.service;
 
+import com.micropos.api.dto.ItemDto;
+import com.micropos.api.dto.PaymentDto;
 import com.micropos.api.dto.ProductDto;
 import com.micropos.carts.mapper.ItemMapper;
 import com.micropos.carts.model.Item;
@@ -21,6 +23,8 @@ public class SimpleCartService implements CartService {
     private static final String POS_PRODUCTS_URL = "http://pos-products/api";
 
     private static final String POS_COUNTER_URL = "http://pos-counter/api";
+
+    private static final String POS_ORDER_URL = "http://pos-order/api";
 
     @Autowired
     private CartRepository cartRepository;
@@ -100,6 +104,11 @@ public class SimpleCartService implements CartService {
 
     @Override
     public String checkout() {
+        List<Item> items = cartRepository.allItems();
+        // 购物车是空的
+        if (items.size() == 0) {
+            return null;
+        }
         // 计算总价
         Double total = restTemplate.postForObject(
                 POS_COUNTER_URL + "/counter/checkout",
@@ -110,7 +119,8 @@ public class SimpleCartService implements CartService {
             log.error("Counter service return null value");
         }
         // 生成订单
-
-        return null;
+        List<ItemDto> itemDtoList = itemMapper.toItemDtos(items);
+        PaymentDto paymentDto = new PaymentDto().total(total).items(itemDtoList);
+        return restTemplate.postForObject(POS_ORDER_URL + "/orders", paymentDto, String.class);
     }
 }

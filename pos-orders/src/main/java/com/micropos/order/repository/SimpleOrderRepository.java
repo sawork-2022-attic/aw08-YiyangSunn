@@ -24,7 +24,7 @@ public class SimpleOrderRepository implements OrderRepository {
     }
 
     @Override
-    public boolean addOrder(Order order) {
+    public boolean saveOrder(Order order) {
         orders.put(order.getOrderId(), order);
         return true;
     }

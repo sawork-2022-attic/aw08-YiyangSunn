@@ -3,6 +3,7 @@ package com.micropos.order.controller;
 import com.micropos.api.controller.OrdersApi;
 import com.micropos.api.dto.OrderDto;
 import com.micropos.api.dto.OrderOutlineDto;
+import com.micropos.api.dto.PaymentDto;
 import com.micropos.order.mapper.OrderMapper;
 import com.micropos.order.model.Order;
 import com.micropos.order.service.OrderService;
@@ -36,5 +37,14 @@ public class OrderController implements OrdersApi {
     public ResponseEntity<List<OrderOutlineDto>> getOrders() {
         List<Order> orders = orderService.orders();
         return ResponseEntity.ok().body(orderMapper.toOrderOutlines(orders));
+    }
+
+    @Override
+    public ResponseEntity<String> createOrder(PaymentDto paymentDto) {
+        String orderId = orderService.createOrder(paymentDto.getTotal(), paymentDto.getItems());
+        if (orderId != null) {
+            return ResponseEntity.ok().body(orderId);
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

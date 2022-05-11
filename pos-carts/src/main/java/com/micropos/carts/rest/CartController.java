@@ -71,6 +71,16 @@ public class CartController implements CartsApi {
         return ResponseEntity.badRequest().build();
     }
 
+    @Override
+    @CircuitBreaker(name = "cart-controller", fallbackMethod = "checkoutAllFallback")
+    public ResponseEntity<String> checkoutAll() {
+        String orderId = cartService.checkout();
+        if (orderId != null) {
+            return ResponseEntity.ok().body(orderId);
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     // 默认的降级处理函数
     public ResponseEntity<Void> defaultFallback(Throwable throwable) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
@@ -81,6 +91,10 @@ public class CartController implements CartsApi {
     }
 
     public ResponseEntity<ItemDto> showItemByIdFallback(Throwable throwable) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+    }
+
+    public ResponseEntity<String> checkoutAllFallback(Throwable throwable) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
     }
 }

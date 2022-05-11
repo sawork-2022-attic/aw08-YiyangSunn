@@ -10,5 +10,5 @@ public interface OrderRepository {
 
     Order findOrderById(String orderId);
 
-    boolean addOrder(Order order);
+    boolean saveOrder(Order order);
 }
