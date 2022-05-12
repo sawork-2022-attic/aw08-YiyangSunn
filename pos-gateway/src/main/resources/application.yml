@@ -6,16 +6,12 @@ spring:
     name: pos-gateway
   cloud:
     gateway:
-#      开启 DiscoveryClient 的支持，和服务发现、负载均衡有关
       discovery:
         locator:
           enabled: true
-#      配置路由
       routes:
         - id: pos-products
-#          使用负载均衡访问服务实例，默认策略是 RoundRobin；通过服务名访问需要 DiscoveryClient 的支持
           uri: lb://pos-products
-#          匹配条件
           predicates:
             - Path=/api/products/**
 
@@ -23,6 +19,16 @@ spring:
           uri: lb://pos-carts
           predicates:
             - Path=/api/carts/**
+
+        - id: pos-orders
+          uri: lb://pos-orders
+          predicates:
+            - Path=/api/orders/**
+
+        - id: pos-delivery
+          uri: lb://pos-delivery
+          predicates:
+            - Path=/api/delivery/**
 
         - id: pos-frontend
           uri: http://localhost:3000
