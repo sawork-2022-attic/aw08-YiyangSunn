@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeliveryPhase {
+public class DeliveryInfo {
 
-    private Long timeStamp;
+    private String orderId;
 
-    private String message;
+    private String deliveryId;
+
+    private String carrier;
 }

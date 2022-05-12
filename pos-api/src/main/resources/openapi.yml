@@ -277,6 +277,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /delivery/{deliveryId}:
+    get:
+      summary: Get the delivery info by ID
+      operationId: getDeliveryById
+      tags:
+        - delivery
+      parameters:
+        - name: deliveryId
+          in: path
+          required: true
+          description: Id of the delivery
+          schema:
+            type: string
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Delivery"
 
 components:
   schemas:
@@ -381,6 +401,36 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/OrderOutline"
+    Delivery:
+      type: object
+      properties:
+        deliveryId:
+          type: string
+        orderId:
+          type: string
+        carrier:
+          type: string
+        phases:
+          type: array
+          items:
+            $ref: "#/components/schemas/DeliveryPhase"
+    DeliveryPhase:
+      type: object
+      properties:
+        timeStamp:
+          type: integer
+          format: int64
+        message:
+          type: string
+    DeliveryInfo:
+      type: object
+      properties:
+        orderId:
+          type: string
+        deliveryId:
+          type: string
+        carrier:
+          type: string
     Error:
       type: object
       required:

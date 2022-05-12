@@ -9,10 +9,19 @@ spring:
     port: 5672
     username: root
     password: Saw0rk_2o22
+  cloud:
+    function:
+      definition: order
+    stream:
+      bindings:
+        order-in-0:
+          binder: rabbit
+          destination: orderExchange
+          group: default
 
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://localhost:7001/eureka
