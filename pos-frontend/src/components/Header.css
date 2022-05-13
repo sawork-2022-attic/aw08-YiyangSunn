@@ -4,8 +4,8 @@
     align-items: center;
     height: 90px;
     width: 100%;
-    margin-top: 20px;
     background: white;
+    box-shadow: 0 2px 8px #f0f1f2;
 }
 
 .header .brand {
@@ -35,6 +35,8 @@
 }
 
 .header .cart-button {
+    display: inline-flex;
+    align-items: center;
     width: auto;
     height: auto;
 }

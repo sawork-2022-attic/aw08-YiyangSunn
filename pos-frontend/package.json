@@ -38,6 +38,9 @@
   },
   "devDependencies": {
     "ahooks": "^3.3.10",
-    "antd": "^4.19.5"
+    "antd": "^4.19.5",
+    "react-router": "^6.3.0",
+    "react-router-dom": "^6.3.0",
+    "uuid": "^8.3.2"
   }
 }

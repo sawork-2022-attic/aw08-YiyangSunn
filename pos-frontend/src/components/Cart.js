@@ -1,5 +1,5 @@
 import React, {useContext} from "react"
-import {Button, List} from "antd"
+import {Button, List, message} from "antd"
 import "./Cart.css"
 import {CartContext} from "../App"
 import {useRequest} from "ahooks"
@@ -12,7 +12,8 @@ export default function Cart() {
     requestAddItem,
     requestGetItems,
     requestRemoveItem,
-    requestEmptyItems
+    requestEmptyItems,
+    requestCheckout
   } = useContext(CartContext)
 
   // 从后端读取购物车数据
@@ -92,6 +93,9 @@ export default function Cart() {
         <Button
           type="primary"
           style={{marginRight: "0"}}
+          onClick={() => requestCheckout().then(data => {
+            data !== null && message.success("购买成功")
+          })}
         >
           结算
         </Button>

@@ -9,7 +9,6 @@ import "./App.css"
 export const CartContext = React.createContext({});
 
 export default function App() {
-
   // 购物车清单（状态提升，用于组件间通信）
   const [itemList, setItemList] = useState([])
 
@@ -100,7 +99,7 @@ export default function App() {
     }).then(data => {
       setItemList(data)
     }).catch(error => {
-      console.log(error.message)
+      message.error(error.message)
     })
   }
 
@@ -140,6 +139,27 @@ export default function App() {
     })
   }
 
+  const requestCheckout = async () => {
+    return fetch(
+      "http://localhost:8080/api/carts/checkout",
+      {
+        method: "POST",
+        body: null,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    ).then(response => {
+      if (response.ok) {
+        return response.text()
+      } else {
+        throw new Error("Failed to checkout!")
+      }
+    }).catch(error => {
+      message.error(error.message)
+    })
+  }
+
   // 把数据和可用操作封装到上下文中，子组件可以直接从 context 里拿，
   // 不用一层一层传递属性，避免 prop drilling
   const value = {
@@ -147,7 +167,8 @@ export default function App() {
     requestAddItem,
     requestGetItems,
     requestRemoveItem,
-    requestEmptyItems
+    requestEmptyItems,
+    requestCheckout,
   }
 
   return (
@@ -155,7 +176,7 @@ export default function App() {
       <CartContext.Provider value={value}>
         <Header/>
         <Content/>
-        <BackTop>
+        <BackTop style={{width: "auto", height: "auto"}}>
           <Button
             className="back-top-button"
             icon={<ArrowUpOutlined className="back-top-button-icon"/>}
