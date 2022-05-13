@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DeliveryPhase {
 
+    private String phaseId;
+
     private Long timeStamp;
 
     private String message;

@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: pos-order
+    name: pos-orders
   rabbitmq:
     host: localhost
     port: 5672

@@ -417,6 +417,8 @@ components:
     DeliveryPhase:
       type: object
       properties:
+        phaseId:
+          type: string
         timeStamp:
           type: integer
           format: int64

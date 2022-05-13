@@ -24,7 +24,7 @@ public class SimpleCartService implements CartService {
 
     private static final String POS_COUNTER_URL = "http://pos-counter/api";
 
-    private static final String POS_ORDER_URL = "http://pos-order/api";
+    private static final String POS_ORDER_URL = "http://pos-orders/api";
 
     @Autowired
     private CartRepository cartRepository;
@@ -38,13 +38,7 @@ public class SimpleCartService implements CartService {
     @Override
     @Cacheable(value = "items", unless = "#result != null && #result.size() > 0")
     public List<Item> items() {
-        List<Item> itemList = cartRepository.allItems();
-        // 按加入购物车的时间进行排序
-        itemList.sort((item1, item2) -> {
-            long tsDiff = item1.getTimeStamp() - item2.getTimeStamp();
-            return tsDiff < 0 ? -1 : tsDiff > 0 ? 1 : 0;
-        });
-        return itemList;
+        return cartRepository.allItems();
     }
 
     @Override

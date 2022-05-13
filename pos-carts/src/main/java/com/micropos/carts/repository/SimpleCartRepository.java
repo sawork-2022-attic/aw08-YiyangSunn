@@ -17,7 +17,13 @@ public class SimpleCartRepository implements CartRepository {
 
     @Override
     public List<Item> allItems() {
-        return new ArrayList<>(cartTable.values());
+        List<Item> itemList = new ArrayList<>(cartTable.values());
+        // 按加入购物车的时间进行排序
+        itemList.sort((item1, item2) -> {
+            long tsDiff = item1.getTimeStamp() - item2.getTimeStamp();
+            return tsDiff < 0 ? -1 : tsDiff > 0 ? 1 : 0;
+        });
+        return itemList;
     }
 
     @Override
