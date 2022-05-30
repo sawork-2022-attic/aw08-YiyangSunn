@@ -15,6 +15,6 @@ Try to understand the provided code which demonstrates spring integration betwee
 
 Please implement delivery as an standalone service (just like the random joke service). Refer the sample code to integrate your Micropos system with delivery service so that user can check delivery status on Miropos which actually forwards user request to delivery service on demand.
 
-![](out/micropos/Micropos.svg)
+![](Micropos.svg)
 
 Consider the advantage by doing so and write it down in your readme file.
