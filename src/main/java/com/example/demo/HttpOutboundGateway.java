@@ -15,8 +15,6 @@ public class HttpOutboundGateway {
                 .handle(Http.outboundGateway("https://api.chucknorris.io/jokes/random")
                         .httpMethod(HttpMethod.GET)
                         .expectedResponseType(Joke.class))
-                .<Joke, String>transform((j) -> j.getValue())
-                .handle(System.out::println)
                 .get();
     }
 }
