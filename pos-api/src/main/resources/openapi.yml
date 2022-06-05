@@ -1,0 +1,446 @@
+openapi: 3.0.0
+info:
+  title: Carts
+  version: 1.0.0
+  license:
+    name: MIT
+paths:
+  /carts:
+    get:
+      summary: List all items in the cart
+      operationId: listItems
+      tags:
+        - carts
+      responses:
+        200:
+          description: A paged array of items
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Items"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Empty the cart
+      operationId: emptyItems
+      tags:
+        - carts
+      responses:
+        200:
+          description: ok
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /carts/{productId}:
+    get:
+      summary: Info for a specified item
+      operationId: showItemById
+      tags:
+        - operation-on-single-item
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The id of the product
+          schema:
+            type: string
+      responses:
+        200:
+          description: The specified item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: delete the specified item
+      operationId: removeItemById
+      tags:
+        - operation-on-single-item
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The id of the product
+          schema:
+            type: string
+      responses:
+        200:
+          description: ok
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: change the quantity of the specified item
+      operationId: updateItemById
+      tags:
+        - operation-on-single-item
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The id of the product
+          schema:
+            type: string
+        - name: quantity
+          in: query
+          required: true
+          description: The amount of change in the quantity of the product (could be negative)
+          schema:
+            type: integer
+      responses:
+        200:
+          description: ok
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /carts/checkout:
+    post:
+      summary: Check out the items in cart
+      operationId: checkoutAll
+      tags:
+        - checkout
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: string
+        400:
+          description: bad request
+  /counter/checkout:
+    post:
+      summary: Compute the total price of products in a Cart
+      operationId: checkout
+      tags:
+        - checkout
+      requestBody:
+        description: The item list to compute on
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Items"
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: number
+                format: double
+  /products:
+    get:
+      summary: List all products
+      operationId: listProducts
+      tags:
+        - products
+      responses:
+        200:
+          description: A paged array of products
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Products"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /products/{productId}:
+    get:
+      summary: Info for a specific product
+      operationId: showProductById
+      tags:
+        - product
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The id of the product to retrieve
+          schema:
+            type: string
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /products/pager:
+    get:
+      summary: Get a page of products
+      operationId: getProductsInPage
+      tags:
+        - products
+      parameters:
+        - name: page
+          in: query
+          required: true
+          description: page number
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          required: true
+          description: how many products per page
+          schema:
+            type: integer
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageResult"
+  /orders:
+    get:
+      summary: Get the outline of all orders
+      operationId: getOrders
+      tags:
+        - orders
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderOutlines"
+    post:
+      summary: Create a new order
+      operationId: createOrder
+      tags:
+        - order
+      requestBody:
+        description: The data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Payment"
+      responses:
+        200:
+          description: ok, return the order ID
+          content:
+            application/json:
+              schema:
+                type: string
+  /orders/{orderId}:
+    get:
+      summary: Get the detail info of the specified order
+      operationId: getOrderById
+      tags:
+        - order
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          description: The id of the order to retrieve
+          schema:
+            type: string
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /delivery/{deliveryId}:
+    get:
+      summary: Get the delivery info by ID
+      operationId: getDeliveryById
+      tags:
+        - delivery
+      parameters:
+        - name: deliveryId
+          in: path
+          required: true
+          description: Id of the delivery
+          schema:
+            type: string
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Delivery"
+
+components:
+  schemas:
+    Item:
+      type: object
+      required:
+        - id
+        - name
+        - quantity
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+        image:
+          type: string
+        quantity:
+          type: integer
+    Items:
+      type: array
+      items:
+        $ref: "#/components/schemas/Item"
+    Product:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+        image:
+          type: string
+    Products:
+      type: array
+      items:
+        $ref: "#/components/schemas/Product"
+    PageResult:
+      type: object
+      properties:
+        total:
+          type: integer
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+    Payment:
+      type: object
+      properties:
+        total:
+          type: number
+          format: double
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Item"
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: string
+        deliveryId:
+          type: string
+        createdTime:
+          type: integer
+          format: int64
+        payedTime:
+          type: integer
+          format: int64
+        total:
+          type: number
+          format: double
+        orderStatus:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Item"
+    OrderOutline:
+      type: object
+      properties:
+        orderId:
+          type: string
+        deliveryId:
+          type: string
+        createdTime:
+          type: integer
+          format: int64
+        orderStatus:
+          type: string
+        total:
+          type: number
+          format: double
+    OrderOutlines:
+      type: array
+      items:
+        $ref: "#/components/schemas/OrderOutline"
+    Delivery:
+      type: object
+      properties:
+        deliveryId:
+          type: string
+        orderId:
+          type: string
+        carrier:
+          type: string
+        phases:
+          type: array
+          items:
+            $ref: "#/components/schemas/DeliveryPhase"
+    DeliveryPhase:
+      type: object
+      properties:
+        phaseId:
+          type: string
+        timeStamp:
+          type: integer
+          format: int64
+        message:
+          type: string
+    DeliveryInfo:
+      type: object
+      properties:
+        orderId:
+          type: string
+        deliveryId:
+          type: string
+        carrier:
+          type: string
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
