@@ -4,6 +4,14 @@ server:
 spring:
   application:
     name: pos-gateway
+  web:
+    resources:
+      static-locations:
+        - classpath:/META-INF/resources/
+        - classpath:/resources/
+        - classpath:/static/
+        - classpath:/public/
+        - classpath:/build/
   cloud:
     gateway:
       discovery:
@@ -24,16 +32,6 @@ spring:
           uri: lb://pos-orders
           predicates:
             - Path=/api/orders/**
-
-        - id: pos-delivery
-          uri: lb://pos-delivery
-          predicates:
-            - Path=/api/delivery/**
-
-        - id: pos-frontend
-          uri: http://localhost:3000
-          predicates:
-            - Path=/**
 
 eureka:
   instance:
