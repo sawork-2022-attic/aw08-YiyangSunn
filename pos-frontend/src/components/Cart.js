@@ -87,12 +87,14 @@ export default function Cart() {
           danger={true}
           style={{float: "left"}}
           onClick={requestEmptyItems}
+          disabled={itemList.length === 0}
         >
           清空
         </Button>
         <Button
           type="primary"
           style={{marginRight: "0"}}
+          disabled={itemList.length === 0}
           onClick={() => requestCheckout().then(data => {
             data !== null && message.success("购买成功")
           })}

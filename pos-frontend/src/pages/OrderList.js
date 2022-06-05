@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import "./OrderList.css"
 import {useRequest} from "ahooks"
 import {Button, Descriptions, message, Modal, Table, Timeline} from "antd"
-import {ClockCircleOutlined} from "@ant-design/icons"
+import {ClockCircleOutlined, ReloadOutlined} from "@ant-design/icons"
 
 // helper functions
 const truncateUUID = id => id.substring(0, id.indexOf("-"))
@@ -73,7 +73,7 @@ export default function OrderList(props) {
     })
   }
 
-  const {data, error, loading} = useRequest(loadOrders)
+  const {data, error, loading, runAsync} = useRequest(loadOrders)
 
   if (error) {
     message.error(error.message)
@@ -145,7 +145,17 @@ export default function OrderList(props) {
   return (
     <div className="order-list">
       <Table
-        title={() => <span className="order-list-title">我的订单</span>}
+        title={() => (
+          <div>
+            <span className="order-list-title">我的订单</span>
+            <Button
+              shape="circle"
+              style={{marginLeft: "10px"}}
+              onClick={runAsync}
+              icon={<ReloadOutlined style={{fontSize: "18px"}}/>}
+            />
+          </div>
+        )}
         dataSource={data}
         columns={columns}
         loading={loading}

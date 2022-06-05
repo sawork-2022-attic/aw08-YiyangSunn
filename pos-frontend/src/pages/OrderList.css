@@ -31,6 +31,9 @@
 .order-detail-item .item-name {
     margin-left: 20px;
     width: 100%;
+    height: 70px;
+    max-height: 70px;
+    overflow: hidden;
 }
 
 .order-detail-item .item-price-quantity {

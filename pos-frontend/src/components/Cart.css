@@ -54,10 +54,12 @@
 
 .cart .item-description {
     color: #666666;
-    height: 80px;
-    width: 220px;
     margin-left: 10px;
+    width: 220px;
+    height: 70px;
+    max-height: 70px;
     display: inline-block;
+    overflow: hidden;
 }
 
 .cart .item-price {
